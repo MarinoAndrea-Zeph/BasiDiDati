@@ -7,9 +7,13 @@ Si vuole progettare e realizzare una base di dati che simuli il funzionamento (p
 ## ANALISI DEI REQUISITI
 
 Cominciando dai dati dei giocatori, abbiamo certamente bisogno dell'email di ogni giocatore, a cui poi verrà assegnato un UID. Avremo poi ovviamente bisogno anche di sapere il nickname che ha scelto per il suo personaggio. Tenere traccia del suo livello durante l'avanzamento del gioco risulta molto importante e, per questioni di QOL dei giocatori, è interessante mantenere anche la data di nascita del giocatore. I giocatori potranno selezionare il sesso del personaggio principale. Non sempre rispecchierà il sesso dell'effettivo giocatore, ma essendo comunque una buona assunzione sul giocatore medio, il sesso che selezioneranno per il protagonista verrà comunque collegato al giocatore. I giocatori possono essere amici tra di loro scambiandosi il loro UID per poter giocare assieme.
+
 Ogni giocatore entrerà piano piano in possesso di diversi personaggi, che verranno salvati in un armadietto personaggi. Ogni personaggio ha un nome unico, un elemento, un'arma e una serie di statistiche di base. Quando entra in possesso di un giocatore avrà successivzmente anche un livello, una costellazione, una data di acquisizione e un livello di amicizia.
+
 I personaggi possiedono, dopo che un giocatore li ha ottenuti, un equipaggiamento, composto da 5 artefatti (un fiore, una piuma, una clessidra, una coppa e una corona) che migliorano le statistiche di base dei personaggi. Di conseguenza, per ogni artefatto si vuole sapere a che set appartenga, di che tipo sia e le statisctiche che migliorerà.
+
 I personaggi vengono rilasciati e si ripresentano ricorrentemente durante dei banner, dei quali vogliamo sapere titolo, data di rilascio e data di scadenza. Utile ad identificare i banner risulta la presenza delle versioni di gioco, che avranno un codice (1.0, 2.5, 3.4, ...), un titolo, una data di inizio e di fine.
+
 Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici possono essere normali, elite o boss e di essi ci interessano sapere le varie statistiche di combattimento e il loro nome. Questi nemici saranno presenti nel mondo di gioco, ma soprattutto nella modalità di gioco competitiva conosciuta come _Abisso a Spirale_. In questa modalità, composta da piani e camere, i mostri si presenteranno con vari livelli di forza. Dell'Abisso a spirale ci interessa sapere la versione di uscita, la fase lunare e le camere e i piani da cui è composta.
 
 ## GLOSSARIO DEI TERMINI
@@ -25,19 +29,41 @@ Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici poss
 | Elemento | I personaggi combattono con l'aiuto di uno dei 7 elementi | potere | Personaggio |
 | Arma | I personaggi impugnano una delle 5 armi |  | Personaggio |
 | Banner | I personaggi escono durante un banner, dove il giocatore può effettuare dei desideri |  | Banner |
-| Desiderio | Possibilità di ottenere un personaggio, al costo di dei crediti di gioco | Canche, pull | Banner |
-| Abisso | La modalità end game del gioco, dove i giocatori devono affrontare diverse ondate di mostri | Arena | Abisso a Spirale |
+| Desiderio | Possibilità di ottenere un personaggio, al costo di dei crediti di gioco | chance, pull | Banner |
+| Abisso a Spirale | La modalità end game del gioco, dove i giocatori devono affrontare diverse ondate di mostri | Arena | Abisso a Spirale |
 | Elite | Dei nemici particolarmente forti, con meccaniche uniche |  | Nemico |
-
-## SUDDIVISIONE DEL TESTO IN FRASI OMOGENEE
 
 ## DIAGRAMMA ENTITY-RELATIONSHIP
 
-## DIZIONARIO DEI DATI
+## DIZIONARIO DEI DATI - ENTITÀ
 
-## DIZIONARIO DEI DATI (RELATIONSHIPS)
+| Entità           | Descrizione | Attributi | Identificatore |
+| :---------------- | :---------- | :------- | :----------- |
+| Giocatore | i giocatori registrati a Genshin Impact | UID, nickname, email, dataRegistrazione, livello avventura, compleanno, sesso | UID |
+| Armadietto Personaggi | i personaggi che ogni giocatore possiede | giocatore, personaggio, livello, costellazione, amicizia, dataAcquisizione | giocatore, personaggio |
+| Personaggio | i personaggi presenti nel gioco | nome, elemento, arma, ascensionStat, attaccoBase, HPBase, difesaBase, costellazione | nome |
+| Banner | dei luoghi dove è possibile ottenere specifici personaggi | versione, titolo, dataRilascio, dataScadenza | versione, titolo |
+| Versione | le varie versioni del gioco | ID, titolo, dataRilascio, dataScadenza | ID |
+| Abisso a Spirale | la modalità competitiva del gioco, dove i giocatori affrontano diversi nemici sempre più potenti | versione, faseLunare | versione, faseLunare |
+| Nemico | i nemici del gioco | nome, HP, attacco, difesa, fazione | nome |
+
+## DIZIONARIO DEI DATI - RELAZIONI
+
+| Relazione           | Descrizione | Componenti | Attributi |
+| :---------------- | :---------- | :------- | :----------- |
+| Amicizia | i giocatori stringono amicizia tra di loro | Giocatore |  |
+| Possesso | ogni giocatore possiede un armadietto personaggi | Giocatore, Armadietto Personaggi |  |
+| Equipaggiamento | i personaggi nell'armadietto possono venire equipaggiati con degli artefatti | Armadietto Personaggi, Artefatti |  |
+| Presenza | i personaggi sono presenti all'interno degli armadietti dei vari giocatori | Personaggio, Armadietto Personaggi |  |
+| Esposizione | i personaggi vengono esposti in dei banner | Personaggio, Banner |  |
+| Uscita | i banner escono nel corso di diverse versioni | Banner, Versione |  |
+| Uscita | l'abisso a spirale esce e cambia in diverse versioni | Abisso a Spirale, Versione |  |
+| Contenuto | i nemici riempiono l'Abisso per essere sfidati dai giocatori | Abisso a Spirale, Nemico | camera, quantità |
 
 ## VINCOLI NON ESPRIMIBILI GRAFICAMENTE
+
+* sesso deve essere tra M e F, non esprimendo il genere del giocatore, ma il sesso del personaggio selezionato, a scelta tra un maschio e una femmina
+* le date di rilascio di banner e versioni non possono essere antecedenti a quelle di scadenza
 
 ## CONSIDERAZIONI GENERALI
 
