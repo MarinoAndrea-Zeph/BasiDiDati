@@ -35,12 +35,15 @@ Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici poss
 
 ## DIAGRAMMA ENTITY-RELATIONSHIP
 
+![Diagramma E-R del database](/genshinDB.png "Diagramma E-R del database")
+
 ## DIZIONARIO DEI DATI - ENTITÀ
 
 | Entità           | Descrizione | Attributi | Identificatore |
 | :---------------- | :---------- | :------- | :----------- |
 | Giocatore | i giocatori registrati a Genshin Impact | UID, nickname, email, dataRegistrazione, livello avventura, compleanno, sesso | UID |
 | Armadietto Personaggi | i personaggi che ogni giocatore possiede | giocatore, personaggio, livello, costellazione, amicizia, dataAcquisizione | giocatore, personaggio |
+| Artefatto | l'equipaggiamento assegnabile ai personaggi | ID, tipo, set, subSbloccato, mainStat, subStat1, subStat2, subStat3, subStat4 | ID |
 | Personaggio | i personaggi presenti nel gioco | nome, elemento, arma, ascensionStat, attaccoBase, HPBase, difesaBase, costellazione | nome |
 | Banner | dei luoghi dove è possibile ottenere specifici personaggi | versione, titolo, dataRilascio, dataScadenza | versione, titolo |
 | Versione | le varie versioni del gioco | ID, titolo, dataRilascio, dataScadenza | ID |
@@ -53,17 +56,19 @@ Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici poss
 | :---------------- | :---------- | :------- | :----------- |
 | Amicizia | i giocatori stringono amicizia tra di loro | Giocatore |  |
 | Possesso | ogni giocatore possiede un armadietto personaggi | Giocatore, Armadietto Personaggi |  |
+| Proprietà | ogni giocatore è proprietario di degli artefatti | Giocatore, Artefatti |  |
 | Equipaggiamento | i personaggi nell'armadietto possono venire equipaggiati con degli artefatti | Armadietto Personaggi, Artefatti |  |
 | Presenza | i personaggi sono presenti all'interno degli armadietti dei vari giocatori | Personaggio, Armadietto Personaggi |  |
 | Esposizione | i personaggi vengono esposti in dei banner | Personaggio, Banner |  |
 | Uscita | i banner escono nel corso di diverse versioni | Banner, Versione |  |
-| Uscita | l'abisso a spirale esce e cambia in diverse versioni | Abisso a Spirale, Versione |  |
-| Contenuto | i nemici riempiono l'Abisso per essere sfidati dai giocatori | Abisso a Spirale, Nemico | camera, quantità |
+| Avvenimento | l'abisso a spirale esce e cambia in diverse versioni | Abisso a Spirale, Versione |  |
+| Contenuto | i nemici riempiono l'Abisso per essere sfidati dai giocatori | Abisso a Spirale, Nemico | piano, camera, quantità |
 
 ## VINCOLI NON ESPRIMIBILI GRAFICAMENTE
 
 * sesso deve essere tra M e F, non esprimendo il genere del giocatore, ma il sesso del personaggio selezionato, a scelta tra un maschio e una femmina
 * le date di rilascio di banner e versioni non possono essere antecedenti a quelle di scadenza
+* un artefatto può essere equipaggiato su un personaggio solo se entrambi sono di proprietà dello stesso giocatore
 
 ## CONSIDERAZIONI GENERALI
 
