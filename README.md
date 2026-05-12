@@ -2,7 +2,7 @@
 
 ## INTRODUZIONE
 
-Si vuole progettare e realizzare una base di dati che simuli il funzionamento (per quanto rudimentale e ridotto a casi più interessanti) del databse del videogioco Genshin Impact. L'obiettivo del database è quello di immagazzinare tutte le informazioni dei vari giocatori e dei dati più importanti per il corretto funzionamento del gioco, come i dati dei nemici e dei personaggi giocabili.
+Si vuole progettare e realizzare una base di dati che simuli il funzionamento (per quanto rudimentale e ridotto a casi più interessanti) del databse del videogioco Genshin Impact. L'obiettivo del database è quello di immagazzinare tutte le informazioni dei vari giocatori e dei dati più importanti per il corretto funzionamento del gioco, come i dati dei nemici e dei personaggi giocabili. Per chiarezza, Genshin impact è un videogioco Gacha RPG Open World nel quale i giocatori devono sconfiggere diversi nemici utilizzando gli elementi branditi dai personaggi e le interazioni tra di essi.
 
 ## ANALISI DEI REQUISITI
 
@@ -15,7 +15,10 @@ Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici poss
 ## GLOSSARIO DEI TERMINI
 
 | Termine           | Definizione | Sinonimi | Collegamento |
-| :---------------- | :---------: | :------- | :----------- |
+| :---------------- | :---------- | :------- | :----------- |
+| RPG | Role Play Game, gioco di ruolo | GDR |  |
+| Open World | Gioco in cui il mondo è liberamente esplorabile |  |  |
+| Gacha | Gioco in cui i personaggi si ottengono tramite probabilità e non tramite avanzamento o acquisto diretto |  |  |
 | Livello avventura | Il livello di esperienza del giocatore |  | Giocatore |
 | Amicizia | Il livello di amicizia instaurato con un personaggio, direttamente proporzionale al tempo di gioco con esso | tempo di gioco | Personaggio, Giocatore, Armadietto Personaggi |
 | Costellazione |  Il numero di volte che lo stesso personaggio è stato trovato | | Personaggio, Armadietto Personaggi |
