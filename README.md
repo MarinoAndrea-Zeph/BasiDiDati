@@ -68,11 +68,40 @@ Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici poss
 
 * sesso deve essere tra M e F, non esprimendo il genere del giocatore, ma il sesso del personaggio selezionato, a scelta tra un maschio e una femmina
 * le date di rilascio di banner e versioni non possono essere antecedenti a quelle di scadenza
+* il livello di un personaggi va dall'1 al 90, la sua amicizia dall'1 al 10 e la sua costellazione dallo 0 al 6
 * un artefatto può essere equipaggiato su un personaggio solo se entrambi sono di proprietà dello stesso giocatore
+* gli artefatti di tipo 'fiore' devono avere 'HP' come statistica principale
+* gli artefatti di tipo 'piuma' devono avere 'ATK' come statistica principale
+* solo gli artefatti di tipo 'corona' posono avere 'CritDmg' e 'CritRate come statistica principale
+* un giocatore non può possedere più di 1500 artefatti
 
 ## CONSIDERAZIONI GENERALI
 
+Considerando che alcune statistiche di gioco fondamentali non sono rese note al pubblico, bisognerà inventarsi qualche formula per rendere possibile la rappresentazione di alcune cose. Ad esempio, delle costanti valide per tutti i personaggi che esprimano di quanto aumentano attacco, salute e difesa di base di ogni personaggio all'aumentare dei livelli. Oltretutto, per semplificare il calcolo delle statistiche complessive, ogni artefatto dovrà tenere traccia di tutte le statistiche possibili, lasciando a 0 quelle che non possiede realmente (un artefatto ha una statistica pricncipale e 4 secondarie, quindi 5 statistiche su 10 disponibili. Queste 5 avranno un valore > 1, le altre saranno impostate a 0). Questa scelta renderà possibile utilizzare formule standard per il calcolo delle statistiche complessive dei personaggi senza dover andare a chiedersi se l'artefatto possiede quella statistica o meno.
+
+La generalizzazione dei Nemici in 'Normale', 'Elite' e 'Boss' è di tipo esclusivo, in quanto ogni nemico dovrà cadere in una di queste categorie (e una soltanto). Non avendo nessuna caratteristica che li distingua, se non l'appartenenza stessa al gruppo, questa generalizzazione verrà tradotta con un attributo 'Grado' che esprime a quale categoria appartiene il nemico.
+
 ## TAVOLA DEI VOLUMI
+
+Supponiamo di dover utilizzare questo database per esprimere effettivamente i dati di gioco, utilizzando quindi dati effettivi reperiti online (data odierna 31/05/2026).
+Genshin Impact ad oggi conta oltre 300 milioni (300'000'000+) di utenti registrati. 
+Il gioco conta la bellezza di 116 personaggi giocabili. Ogni personaggio 5 stelle ha il suo banner dedicato, ad eccezione dei personaggi standard, per un totale di (65 personaggi 5 stelle - 8 standard) 57 banner differenti (che si ripetono però ciclicamente nel corso delle versioni). Essendo che lo stesso personaggio 5 stelle può presentarsi in più banner avendo però dei 4 stelle diversi combinati nelle diverse versioni e che dalla 1.0 alla 2.2 c'erano 2 banner per versione e dalla 2.3 in poi ce ne sono stati 4 per versione, possiamo approsimare il volume della tabella a 400 istanze (ad oggi dovrebbero essere usciti ~200 banner).
+Le versioni di Genshin Impact vanno dalla 1.0 alla 6.6, Per un totale di 50 versioni esatte.
+Ogni versione escono 2 Abissi a Spirale, per un totale di 100 abissi unici. Infine i nemici, contando nemici normali, elite e boss, ammontanto ad esattamente 331.
+
+| Concetto | Tipo | Volume |
+| Giocatore | E | 500'000'000 |
+| Personaggio | E | 300 |
+| Armadietto | E | 100'000'000'000 = (200 x 500'000'000) |
+| Artefatti | E | 750'000'000'000 = (1500 x 500'000'000) |
+| Banner | E | 400 |
+| Versione | E | 100 |
+| Abisso | E | 200 (2 x 100) |
+| Nemico | E | 500 |
+|  |  |  |
+|  |  |  |
+
+Tutti i volumi indicati prevedono una eventuale crescita del gioco e della playerbase in base alla scala con cui potrebbero lievitare i numeri (ritengo più probabile che vengano creati circa 200'000'000 di account prima che vengano rilasciati 184 nuovi personaggi, con una media di 11 nuovi personaggi ogni anno)
 
 ## OPERAZIONI DI INTERESSE
 
