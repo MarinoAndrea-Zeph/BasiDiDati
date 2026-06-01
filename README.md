@@ -92,6 +92,7 @@ Le versioni di Genshin Impact vanno dalla 1.0 alla 6.6, Per un totale di 50 vers
 Ogni versione escono 2 Abissi a Spirale, per un totale di 100 abissi unici. Infine i nemici, contando nemici normali, elite e boss, ammontanto ad esattamente 331.
 
 | Concetto | Tipo | Volume |
+| :------- | :--- | :----- |
 | Giocatore | E | 500'000'000 |
 | Personaggio | E | 300 |
 | Armadietto | E | 100'000'000'000 = (200 x 500'000'000) |
