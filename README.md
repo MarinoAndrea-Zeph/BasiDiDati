@@ -79,7 +79,9 @@ Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici poss
 
 Considerando che alcune statistiche di gioco fondamentali non sono rese note al pubblico, bisognerà inventarsi qualche formula per rendere possibile la rappresentazione di alcune cose. Ad esempio, delle costanti valide per tutti i personaggi che esprimano di quanto aumentano attacco, salute e difesa di base di ogni personaggio all'aumentare dei livelli. Oltretutto, per semplificare il calcolo delle statistiche complessive, ogni artefatto dovrà tenere traccia di tutte le statistiche possibili, lasciando a 0 quelle che non possiede realmente (un artefatto ha una statistica pricncipale e 4 secondarie, quindi 5 statistiche su 10 disponibili. Queste 5 avranno un valore > 1, le altre saranno impostate a 0). Questa scelta renderà possibile utilizzare formule standard per il calcolo delle statistiche complessive dei personaggi senza dover andare a chiedersi se l'artefatto possiede quella statistica o meno.
 
-La generalizzazione dei Nemici in 'Normale', 'Elite' e 'Boss' è di tipo esclusivo, in quanto ogni nemico dovrà cadere in una di queste categorie (e una soltanto). Non avendo nessuna caratteristica che li distingua, se non l'appartenenza stessa al gruppo, questa generalizzazione verrà tradotta con un attributo 'Grado' che esprime a quale categoria appartiene il nemico.
+Ritengo oltremodo doveroso spiegare cosa indichi la relazione "Esposizione" con 4 frecce uscenti verso l'entità "Banner". Ogni Banner del gioco espone 1 personaggio _5 stelle_ e 3 personaggi _4 stelle_, per un totale di 4 personaggi per banner. Di conseguenza, all'interno del database i Banner verranno rappresentati con i loro dati specificati dall'Entità e poi da 4 colonne chiamate 5stelle, 4stelle1, 4stelle2, e 4stelle3. Sarebbe probabilmente stato più opportuno rappresentare quattro relazioni distinte e specificare tramite vincoli questo fattore, ma ho preferito optare per questa soluzione sia per un motivo estetico che per un motivo di compattezza. La relazione come realmente intesa dovrebbe somigliare all'immagine seguente: 
+
+![Espansione della relazione "Esposizione"](/relazioneEsposizione.png "Espansione della relazione Esposizione")
 
 ## TAVOLA DEI VOLUMI
 
@@ -98,16 +100,19 @@ Ogni versione escono 2 Abissi a Spirale, per un totale di 100 abissi unici. Infi
 | Versione | E | 100 |
 | Abisso | E | 200 (2 x 100) |
 | Nemico | E | 500 |
-|  |  |  |
-|  |  |  |
+| Contenuto | R | 50'000 (100 x 500) |
 
-Tutti i volumi indicati prevedono una eventuale crescita del gioco e della playerbase in base alla scala con cui potrebbero lievitare i numeri (ritengo più probabile che vengano creati circa 200'000'000 di account prima che vengano rilasciati 184 nuovi personaggi, con una media di 11 nuovi personaggi ogni anno)
+Tutti i volumi indicati prevedono una eventuale crescita del gioco e della playerbase in base alla scala con cui potrebbero lievitare i numeri (ritengo più probabile che vengano creati circa 200'000'000 di account prima che vengano rilasciati 184 nuovi personaggi, con una media di 11 nuovi personaggi ogni anno).
 
 ## OPERAZIONI DI INTERESSE
 
 ## ANALISI DELLE RIDONDANZE
 
+E' presente una ridondanza dovuta ad un ciclo tra le entità 'Giocatore', 'Armadietto Personaggi' e 'Artefatti', collegate tramite le relazioni 'Possesso', 'Equipaggiamento' e 'Proprietà'. Tuttavia, senza dover fare nessuna particolare analisi sugli accessi, si può dimostrare la necessità di questa ridondanza tramite un fattore implementativo: non tutti gli artefatti che un giocatore possiede sono equipaggiati a un personaggio. Di conseguenza, è necessario tenere traccia di ogni artefatto artefatto posseduto dai giocatori direttamente. Inoltre, non tutti i personaggi posseduti dai giocatori devono necessariamente avere degli artefatti, quindi non è possibile neppure risalire ai personaggi posseduti dai giocatori tramite gli artefatti. Ogni relazione è quindi necessaria per tenere traccia di ogni dato, altrimenti alcune informazioni sono andate perse. 
+
 ## ELIMINAZIONE DELLE GENERALIZZAZIONI
+
+La generalizzazione dei nemici 'Normale', 'Elite' e 'Boss' in un'unica entità 'Nemico' è di tipo esclusivo, in quanto ogni nemico dovrà cadere in una di queste categorie (e una soltanto). Non avendo nessuna caratteristica che li distingua tra di loro, se non l'appartenenza stessa al gruppo, questa generalizzazione verrà tradotta con un attributo 'Grado' che esprime a quale categoria appartiene il nemico. Si manterrà quindi un'unica entità (e quindi poi tabella) 'Nemico'.
 
 ## PARTIZIONAMENTI DELLE ENTITÀ
 
