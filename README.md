@@ -35,7 +35,7 @@ Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici poss
 
 ## DIAGRAMMA ENTITY-RELATIONSHIP
 
-![Diagramma E-R del database](/genshinDB.png "Diagramma E-R del database")
+![Diagramma E-R del database](/images/genshinDB.png "Diagramma E-R del database")
 
 ## DIZIONARIO DEI DATI - ENTITÀ
 
@@ -67,6 +67,8 @@ Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici poss
 ## VINCOLI NON ESPRIMIBILI GRAFICAMENTE
 
 * sesso deve essere tra M e F, non esprimendo il genere del giocatore, ma il sesso del personaggio selezionato, a scelta tra un maschio e una femmina
+* un giocatore non può essere amico di se stesso
+* ogni giocatore DEVE possedere almeno una copia del protagonista, data a inizio gioco (chiamato Traveller)
 * le date di rilascio di banner e versioni non possono essere antecedenti a quelle di scadenza
 * il livello di un personaggi va dall'1 al 90, la sua amicizia dall'1 al 10 e la sua costellazione dallo 0 al 6
 * un artefatto può essere equipaggiato su un personaggio solo se entrambi sono di proprietà dello stesso giocatore
@@ -81,7 +83,7 @@ Considerando che alcune statistiche di gioco fondamentali non sono rese note al 
 
 Ritengo oltremodo doveroso spiegare cosa indichi la relazione "Esposizione" con 4 frecce uscenti verso l'entità "Banner". Ogni Banner del gioco espone 1 personaggio _5 stelle_ e 3 personaggi _4 stelle_, per un totale di 4 personaggi per banner. Di conseguenza, all'interno del database i Banner verranno rappresentati con i loro dati specificati dall'Entità e poi da 4 colonne chiamate 5stelle, 4stelle1, 4stelle2, e 4stelle3. Sarebbe probabilmente stato più opportuno rappresentare quattro relazioni distinte e specificare tramite vincoli questo fattore, ma ho preferito optare per questa soluzione sia per un motivo estetico che per un motivo di compattezza. La relazione come realmente intesa dovrebbe somigliare all'immagine seguente: 
 
-![Espansione della relazione "Esposizione"](/relazioneEsposizione.png "Espansione della relazione Esposizione")
+![Espansione della relazione "Esposizione"](/images/relazioneEsposizione.png "Espansione della relazione Esposizione")
 
 ## TAVOLA DEI VOLUMI
 
@@ -107,23 +109,63 @@ Tutti i volumi indicati prevedono una eventuale crescita del gioco e della playe
 
 ## OPERAZIONI DI INTERESSE
 
+| Operazione | Tipo | Frequenza |
+| :--------- | :--: | :-------- |
+| Ricerca dei dati di un giocatore | Interattiva | +++ |
+| Visualizzazione della lista degli amici di un giocatore | Interattiva | +++ |
+| Ordinamento dei personaggi posseduti da un giocatore per livello (decrescente) | Interattiva | +++ |
+| Calcolo delle statistiche totali di un personaggio posseduto da un giocatore | Interattiva | +++ |
+| Ricerca degli artefatti di un giocatore per statistica principale | Interattiva | +++ |
+| Elenco dei nemici presenti nell'Abisso per piano in una determinata versione | Batch | 2/mese |
+| Conteggio dei giocatori raggruppati per Livello Avventura | Batch | 1/mese |
+| Elenco dei giocatori che compiono gli anni in data corrente | Batch | 1/giorno |
+
+Molte operazioni tra le più essenziali hanno una frequenza incalcolabile, in quanto dovranno essere eseguite ogni volta che i giocatori lo richiederanno, quindi al momento del login. Potenzialmente, ogni giorno tutti i giocatori potrebbero fare login anche più volte al giorno, quindi dovremmo prevedere anche un ipotetico carico di miliardi di richieste delle operazioni segnate con **+++** ogni giorno; ma potrebbe anche capitare (improbabile, ma possibile) che un giorno nessun giocatore effettui il login e che quindi non sia necessario effettuare nessuna di queste operazioni. Possiamo quindi determinare che queste operazioni hanno una frequenza incredibilmente variabile.
+
 ## ANALISI DELLE RIDONDANZE
 
-E' presente una ridondanza dovuta ad un ciclo tra le entità 'Giocatore', 'Armadietto Personaggi' e 'Artefatti', collegate tramite le relazioni 'Possesso', 'Equipaggiamento' e 'Proprietà'. Tuttavia, senza dover fare nessuna particolare analisi sugli accessi, si può dimostrare la necessità di questa ridondanza tramite un fattore implementativo: non tutti gli artefatti che un giocatore possiede sono equipaggiati a un personaggio. Di conseguenza, è necessario tenere traccia di ogni artefatto artefatto posseduto dai giocatori direttamente. Inoltre, non tutti i personaggi posseduti dai giocatori devono necessariamente avere degli artefatti, quindi non è possibile neppure risalire ai personaggi posseduti dai giocatori tramite gli artefatti. Ogni relazione è quindi necessaria per tenere traccia di ogni dato, altrimenti alcune informazioni sono andate perse. 
+E' presente una ridondanza dovuta ad un ciclo tra le entità 'Giocatore', 'Armadietto Personaggi' e 'Artefatti', collegate tramite le relazioni 'Possesso', 'Equipaggiamento' e 'Proprietà'. Tuttavia, senza dover fare nessuna particolare analisi sugli accessi, si può dimostrare la necessità di questa ridondanza tramite un fattore implementativo: non tutti gli artefatti che un giocatore possiede sono equipaggiati a un personaggio. Di conseguenza, è necessario tenere traccia di ogni artefatto artefatto posseduto dai giocatori direttamente. Inoltre, non tutti i personaggi posseduti dai giocatori devono necessariamente avere degli artefatti, quindi non è possibile neppure risalire ai personaggi posseduti dai giocatori tramite gli artefatti. Ogni relazione è quindi necessaria per tenere traccia di ogni dato, altrimenti alcune informazioni sono andate perse.
+
+Essendo che al primo giorno di ogni versione viene rilasciato un banner e un altro scade al termine della versione stessa, si potrebbe pensare che ci sia una ridondanza riguardante gli attributi 'dataRilascio' e 'dataScadenza' nelle entità 'Banner' e 'Versione'. Tuttavia, essendo che ad ogni versione vengono rilasciati 2 banner che poi cambiano (scadendo) a metà versione per lasciare spazio ad altri 2 banner, solo il 50% dei banner ha una data di rilascio coincidente con quella della versione in cui sono stati rilasciati e questi stessi banner hanno data di scadenza differente da quella della versione. Per quanto riguarda l'altro 50%, essi vengono rilasciati pochi giorni dopo la scadenza dei precedenti e scadono 2/3 giorni prima della fine della versione, rendendo quindi queste date incongruenti e rendendo quindi la presenza di entrambe le coppie di date indispensabili, non facendo quindi sussistere alcuna ridondanza.
 
 ## ELIMINAZIONE DELLE GENERALIZZAZIONI
 
 La generalizzazione dei nemici 'Normale', 'Elite' e 'Boss' in un'unica entità 'Nemico' è di tipo esclusivo, in quanto ogni nemico dovrà cadere in una di queste categorie (e una soltanto). Non avendo nessuna caratteristica che li distingua tra di loro, se non l'appartenenza stessa al gruppo, questa generalizzazione verrà tradotta con un attributo 'Grado' che esprime a quale categoria appartiene il nemico. Si manterrà quindi un'unica entità (e quindi poi tabella) 'Nemico'.
 
-## PARTIZIONAMENTI DELLE ENTITÀ
+## PARTIZIONAMENTO DELLE ENTITÀ E DELLE RELATIONSHIPS
 
-## PARTIZIONAMENTO DI RELATIONSHIPS
+Non si ritiene necessario partizionare alcuna entità, essendo che ogni entità contiene tutti e soli gli attributi che sono strettamente necessari ad essa per l'esecuzione delle operazioni fondamentali.
+L'unica relationship con la quale potrebbe essere eseguito un partizionamento potrebbe essere la relazione 'Esposizione' che collega le entità 'Personaggio' e 'Banner', ma essa è in realtà già stata effettuata e spiegata nella sezione [Considerazioni Generali](#CONSIDERAZIONI_GENERALI)
 
 ## SCELTA DEGLI IDENTIFICATORI
 
+* **Giocatore**: si decide di utilizzare come identificatore l'attributo _uid_
+* **Artefatto**: si decide di utilizzare come identificatore l'attributo _ID_
+* **Armadietto Personaggi**: si decide di utilizzare come identificatore la coppia di attributi _uidGiocatore_ e _nomePersonaggio_
+* **Personaggio**: si decide di utilizzare come identificatore l'attributo _nome_
+* **Banner**: si decide di utilizzare come identificatore la coppia di attributi _titolo_ e _IDVersione_
+* **Versione**: si decide di utilizzare come identificatore l'attributo _ID_
+* **Abisso A Spirale**: si decide di utilizzare come identificatore la coppia di attributi _faseLunare_ e _IDVersione_
+* **Nemico**: si decide di utilizzare come identificatore l'attributo _nome_
+
 ## DIAGRAMMA E-R RISTRUTTURATO
 
+![Diagramma E-R ristrutturato](/images/genshinDBrestructured.png "Diagramma E-R ristrutturato")
+
 ## PASSAGGIO AL MODELLO RELAZIONALE
+
+In seguito alla costruzione e ristrutturazione del diagramma E-R, si individuano le seguenti tabelle da presentare nello schema logico con il modello relazionale:
+
+- **Giocatore** (<ins>uid</ins>, nickname, email, sesso, dataRegistrazione, sesso, livelloAvventura, compleanno)
+- **Lista Amici** ()
+- **Artefatto** (<ins>ID</ins>, _proprietario_, _personaggio_, set, tipo, subSbloccato, mainStat, HP, HPperc, ATK, ATKperc, DEF, DEFperc, elementalMastery, energyRecharge, critRate, critDamage)
+- **Armadietto Personaggi** (<ins>uidGiocatore</ins>, <ins>nomePersonaggio</ins>, livello, amicizia, costellazione, dataAcquisizione)
+- **Personaggio** (<ins>nome</ins>, elemento, arma, ascensionStat, attaccoBase, HPbase, difesaBase, costellazione)
+- **Banner** (<ins>titolo</ins>, <ins>IDVersione</ins>, personaggio5, personaggio4_1, personaggio4_2, personaggio4_3, dataRilascio, dataScadenza)
+- **Versione** (<ins>ID</ins>, titolo, dataRilascio, dataScadenza)
+- **Abisso A Spirale** (<ins>faseLunare</ins>, <ins>IDVersione</ins>)
+- **Camera** (<ins>piano</ins>, <ins>camera</ins>, <ins>faseLunare</ins>, <ins>IDVersione</ins>, <ins>nemico</ins>, quantità)
+- **Nemico** (<ins>nome</ins>, fazione, attacco, difesa, HP)
 
 ## SCHEMA LOGICO
 
