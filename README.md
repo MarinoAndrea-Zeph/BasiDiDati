@@ -156,20 +156,27 @@ L'unica relationship con la quale potrebbe essere eseguito un partizionamento po
 
 In seguito alla costruzione e ristrutturazione del diagramma E-R, si individuano le seguenti tabelle da presentare nello schema logico con il modello relazionale:
 
-- **Giocatore** (<ins>uid</ins>, nickname, email, sesso, dataRegistrazione, sesso, livelloAvventura, compleanno)
-- **Lista Amici** ()
+- **Giocatore** (<ins>uid</ins>, nickname, email, sesso, dataRegistrazione, livelloAvventura, compleanno)
+- **Lista Amici** (_<ins>giocatore1</ins>_, _<ins>giocatore2</ins>_)
 - **Artefatto** (<ins>ID</ins>, _proprietario_, _personaggio_, set, tipo, subSbloccato, mainStat, HP, HPperc, ATK, ATKperc, DEF, DEFperc, elementalMastery, energyRecharge, critRate, critDamage)
-- **Armadietto Personaggi** (<ins>uidGiocatore</ins>, <ins>nomePersonaggio</ins>, livello, amicizia, costellazione, dataAcquisizione)
-- **Personaggio** (<ins>nome</ins>, elemento, arma, ascensionStat, attaccoBase, HPbase, difesaBase, costellazione)
-- **Banner** (<ins>titolo</ins>, <ins>IDVersione</ins>, personaggio5, personaggio4_1, personaggio4_2, personaggio4_3, dataRilascio, dataScadenza)
+- **Armadietto Personaggi** (_<ins>uidGiocatore</ins>_, _<ins>nomePersonaggio</ins>_, livello, amicizia, costellazione, dataAcquisizione)
+- **Personaggio** (<ins>nome</ins>, elemento, arma, attaccoBase, HPbase, difesaBase, costellazione)
+- **Banner** (<ins>titolo</ins>, _<ins>IDVersione</ins>_, _personaggio5_, _personaggio4_1_, _personaggio4_2_, _personaggio4_3_, dataRilascio, dataScadenza)
 - **Versione** (<ins>ID</ins>, titolo, dataRilascio, dataScadenza)
-- **Abisso A Spirale** (<ins>faseLunare</ins>, <ins>IDVersione</ins>)
-- **Camera** (<ins>piano</ins>, <ins>camera</ins>, <ins>faseLunare</ins>, <ins>IDVersione</ins>, <ins>nemico</ins>, quantità)
+- **Abisso A Spirale** (<ins>faseLunare</ins>, _<ins>IDVersione</ins>_)
+- **Camera** (<ins>piano</ins>, <ins>camera</ins>, _<ins>faseLunare</ins>_, _<ins>IDVersione</ins>_, _<ins>nemico</ins>_, quantità)
 - **Nemico** (<ins>nome</ins>, fazione, attacco, difesa, HP)
+
+Gli attributi <ins>sottolineati</ins> sono le Primary Key delle tabelle, mentre gli attributi in _corsivo_ sono delle Foreign Key.
 
 ## SCHEMA LOGICO
 
+![Schema Logico](/images/schemaLogico.jpg "schema logico")
+
 ## NORMALIZZAZIONE
+
+Tutte le tabelle si trovano già in terza forma normale, ergo non necessitano di operazioni di normalizzazione. La maggior parte di esse è già avvenuta durante la progettazione iniziale dello schema logico.
+Possiamo dedurre la terza forma normale dal fatto che nessun attributo delle tabelle dipende da attributi non primari: ogni attributo delle tabelle dipende solo dalla primary key.
 
 ## PROGETTAZIONE FISICA
 
