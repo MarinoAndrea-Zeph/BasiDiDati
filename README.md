@@ -178,6 +178,9 @@ Gli attributi <ins>sottolineati</ins> sono le Primary Key delle tabelle, mentre 
 Tutte le tabelle si trovano già in terza forma normale, ergo non necessitano di operazioni di normalizzazione. La maggior parte di esse è già avvenuta durante la progettazione iniziale dello schema logico.
 Possiamo dedurre la terza forma normale dal fatto che nessun attributo delle tabelle dipende da attributi non primari: ogni attributo delle tabelle dipende solo dalla primary key.
 
-## PROGETTAZIONE FISICA
-
 ## DESCRIZIONE DI FILE E CARTELLE
+
+Le cartelle 'excalidraw_files' e 'images' si spiegano abbastanza da sole.
+Nella cartella 'SQL' saranno presenti tutti i file relativi al codice del database. Nella sottocartella 'tabelle' vi sono due file: il file 'genshinDB' contiene tutte le CREATE TABLE del database, in modo tale da poterlo riprodurre tale e quale; nel file 'importantCreate' vi sono solo le CREATE TABLE più interessanti, con degli attributi o dei constraint di particolare rilievo o interesse didattco. Al difuori della cartella 'tabelle' sono presenti altri due file: 'populate' e 'query'. Il primo è uno script che permette di popolare a dovere il database in modo da poterci interagire; riempirà quindi le tabelle di nemici, artefatti e giocatori con i loro personaggi. Si è cercato di ricreare il più fedelmente possibile la rappresentazione del gioco reale. Il secondo file, invece, contiene il codice delle query di rilievo per le operazioni più importanti da fare sul database, di cui si è parlato nella sezione [Operazioni di Interesse](#OPERAZIONI_DI_INTERESSE).
+
+Grazie mille per la vostra attenzione.
