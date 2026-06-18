@@ -6,7 +6,7 @@ Si vuole progettare e realizzare una base di dati che simuli il funzionamento (p
 
 ## ANALISI DEI REQUISITI
 
-Cominciando dai dati dei giocatori, abbiamo certamente bisogno dell'email di ogni giocatore, a cui poi verrà assegnato un UID. Avremo poi ovviamente bisogno anche di sapere il nickname che ha scelto per il suo personaggio. Tenere traccia del suo livello durante l'avanzamento del gioco risulta molto importante e, per questioni di QOL dei giocatori, è interessante mantenere anche la data di nascita del giocatore. I giocatori potranno selezionare il sesso del personaggio principale. Non sempre rispecchierà il sesso dell'effettivo giocatore, ma essendo comunque una buona assunzione sul giocatore medio, il sesso che selezioneranno per il protagonista verrà comunque collegato al giocatore. I giocatori possono essere amici tra di loro scambiandosi il loro UID per poter giocare assieme.
+Cominciando dai dati dei giocatori, abbiamo certamente bisogno dell'email di ogni giocatore, a cui poi verrà assegnato un UID. Avremo poi ovviamente bisogno anche di sapere il nickname che ha scelto per il suo personaggio. Tenere traccia del suo livello durante l'avanzamento del gioco risulta molto importante e, per questioni di QoL dei giocatori, è interessante mantenere anche la data di nascita del giocatore. I giocatori potranno selezionare il sesso del personaggio principale. Non sempre rispecchierà il sesso dell'effettivo giocatore, ma essendo comunque una buona assunzione sul giocatore medio, il sesso che selezioneranno per il protagonista verrà comunque collegato al giocatore. I giocatori possono essere amici tra di loro scambiandosi il loro UID per poter giocare assieme.
 
 Ogni giocatore entrerà piano piano in possesso di diversi personaggi, che verranno salvati in un armadietto personaggi. Ogni personaggio ha un nome unico, un elemento, un'arma e una serie di statistiche di base. Quando entra in possesso di un giocatore avrà successivzmente anche un livello, una costellazione, una data di acquisizione e un livello di amicizia.
 
@@ -44,7 +44,7 @@ Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici poss
 | Giocatore | i giocatori registrati a Genshin Impact | UID, nickname, email, dataRegistrazione, livello avventura, compleanno, sesso | UID |
 | Armadietto Personaggi | i personaggi che ogni giocatore possiede | giocatore, personaggio, livello, costellazione, amicizia, dataAcquisizione | giocatore, personaggio |
 | Artefatto | l'equipaggiamento assegnabile ai personaggi | ID, tipo, set, subSbloccato, mainStat, subStat1, subStat2, subStat3, subStat4 | ID |
-| Personaggio | i personaggi presenti nel gioco | nome, elemento, arma, ascensionStat, attaccoBase, HPBase, difesaBase, costellazione | nome |
+| Personaggio | i personaggi presenti nel gioco | nome, elemento, arma, rarità, attaccoBase, HPBase, difesaBase, costellazione | nome |
 | Banner | dei luoghi dove è possibile ottenere specifici personaggi | versione, titolo, dataRilascio, dataScadenza | versione, titolo |
 | Versione | le varie versioni del gioco | ID, titolo, dataRilascio, dataScadenza | ID |
 | Abisso a Spirale | la modalità competitiva del gioco, dove i giocatori affrontano diversi nemici sempre più potenti | versione, faseLunare | versione, faseLunare |
@@ -74,7 +74,7 @@ Un buon gioco RPG open world ha necessariamente bisogno di nemici. I nemici poss
 * un artefatto può essere equipaggiato su un personaggio solo se entrambi sono di proprietà dello stesso giocatore
 * gli artefatti di tipo 'fiore' devono avere 'HP' come statistica principale
 * gli artefatti di tipo 'piuma' devono avere 'ATK' come statistica principale
-* solo gli artefatti di tipo 'corona' posono avere 'CritDmg' e 'CritRate come statistica principale
+* solo gli artefatti di tipo 'corona' posono avere 'CritDmg' e 'CritRate' come statistica principale
 * un giocatore non può possedere più di 1500 artefatti
 
 ## CONSIDERAZIONI GENERALI
@@ -89,7 +89,7 @@ Ritengo oltremodo doveroso spiegare cosa indichi la relazione "Esposizione" con 
 
 Supponiamo di dover utilizzare questo database per esprimere effettivamente i dati di gioco, utilizzando quindi dati effettivi reperiti online (data odierna 31/05/2026).
 Genshin Impact ad oggi conta oltre 300 milioni (300'000'000+) di utenti registrati. 
-Il gioco conta la bellezza di 116 personaggi giocabili. Ogni personaggio 5 stelle ha il suo banner dedicato, ad eccezione dei personaggi standard, per un totale di (65 personaggi 5 stelle - 8 standard) 57 banner differenti (che si ripetono però ciclicamente nel corso delle versioni). Essendo che lo stesso personaggio 5 stelle può presentarsi in più banner avendo però dei 4 stelle diversi combinati nelle diverse versioni e che dalla 1.0 alla 2.2 c'erano 2 banner per versione e dalla 2.3 in poi ce ne sono stati 4 per versione, possiamo approsimare il volume della tabella a 400 istanze (ad oggi dovrebbero essere usciti ~200 banner).
+Il gioco conta la bellezza di 116 personaggi giocabili. Ogni personaggio 5 stelle ha il suo banner dedicato, ad eccezione dei personaggi standard, per un totale di (65 personaggi 5 stelle - 8 standard) 57 banner differenti (che si ripetono però ciclicamente nel corso delle versioni). Essendo che lo stesso personaggio 5 stelle può presentarsi in più banner avendo però dei 4 stelle diversi combinati nelle diverse versioni e che dalla 1.0 alla 2.2 c'erano 2 banner per versione e dalla 2.3 in poi ce ne sono stati 4 per versione, possiamo approsimare il volume della tabella a 400 istanze (ad oggi dovrebbero essere usciti ~200 banner distinti).
 Le versioni di Genshin Impact vanno dalla 1.0 alla 6.6, Per un totale di 50 versioni esatte.
 Ogni versione escono 2 Abissi a Spirale, per un totale di 100 abissi unici. Infine i nemici, contando nemici normali, elite e boss, ammontanto ad esattamente 331.
 
@@ -105,7 +105,7 @@ Ogni versione escono 2 Abissi a Spirale, per un totale di 100 abissi unici. Infi
 | Nemico | E | 500 |
 | Contenuto | R | 50'000 (100 x 500) |
 
-Tutti i volumi indicati prevedono una eventuale crescita del gioco e della playerbase in base alla scala con cui potrebbero lievitare i numeri (ritengo più probabile che vengano creati circa 200'000'000 di account prima che vengano rilasciati 184 nuovi personaggi, con una media di 11 nuovi personaggi ogni anno).
+Tutti i volumi indicati prevedono una eventuale crescita del gioco e della playerbase in base alla scala con cui potrebbero lievitare i numeri (ritengo più probabile che vengano creati circa 200'000'000 di account prima che vengano rilasciati 184 nuovi personaggi, con una media di 11 nuovi personaggi ogni anno; per ottenere questo risultato si tengono in considerazione account di nuovi giocatori, account secondari di vecchi giocatori e reroll acoount).
 
 ## OPERAZIONI DI INTERESSE
 
@@ -120,13 +120,13 @@ Tutti i volumi indicati prevedono una eventuale crescita del gioco e della playe
 | Conteggio dei giocatori raggruppati per Livello Avventura | Batch | 1/mese |
 | Elenco dei giocatori che compiono gli anni in data corrente | Batch | 1/giorno |
 
-Molte operazioni tra le più essenziali hanno una frequenza incalcolabile, in quanto dovranno essere eseguite ogni volta che i giocatori lo richiederanno, quindi al momento del login. Potenzialmente, ogni giorno tutti i giocatori potrebbero fare login anche più volte al giorno, quindi dovremmo prevedere anche un ipotetico carico di miliardi di richieste delle operazioni segnate con **+++** ogni giorno; ma potrebbe anche capitare (improbabile, ma possibile) che un giorno nessun giocatore effettui il login e che quindi non sia necessario effettuare nessuna di queste operazioni. Possiamo quindi determinare che queste operazioni hanno una frequenza incredibilmente variabile.
+Molte operazioni tra le più essenziali hanno una frequenza incalcolabile, in quanto dovranno essere eseguite ogni volta che i giocatori lo richiederanno, quindi al momento del login. Potenzialmente, ogni giorno tutti i giocatori potrebbero fare login anche più volte al giorno, quindi dovremmo prevedere anche un ipotetico carico di miliardi di richieste delle operazioni segnate con **+++** ogni giorno; ma potrebbe anche capitare (improbabile, ma possibile) che un giorno nessun giocatore effettui il login e che quindi non sia necessario effettuare nessuna di queste operazioni. Possiamo quindi determinare che queste operazioni hanno una frequenza incredibilmente variabile, ma mediamente sull'ordine delle centinaia di milioni al giorno.
 
 ## ANALISI DELLE RIDONDANZE
 
-E' presente una ridondanza dovuta ad un ciclo tra le entità 'Giocatore', 'Armadietto Personaggi' e 'Artefatti', collegate tramite le relazioni 'Possesso', 'Equipaggiamento' e 'Proprietà'. Tuttavia, senza dover fare nessuna particolare analisi sugli accessi, si può dimostrare la necessità di questa ridondanza tramite un fattore implementativo: non tutti gli artefatti che un giocatore possiede sono equipaggiati a un personaggio. Di conseguenza, è necessario tenere traccia di ogni artefatto artefatto posseduto dai giocatori direttamente. Inoltre, non tutti i personaggi posseduti dai giocatori devono necessariamente avere degli artefatti, quindi non è possibile neppure risalire ai personaggi posseduti dai giocatori tramite gli artefatti. Ogni relazione è quindi necessaria per tenere traccia di ogni dato, altrimenti alcune informazioni sono andate perse.
+E' presente una ridondanza dovuta ad un ciclo tra le entità 'Giocatore', 'Armadietto Personaggi' e 'Artefatti', collegate tramite le relazioni 'Possesso', 'Equipaggiamento' e 'Proprietà'. Tuttavia, senza dover fare nessuna particolare analisi sugli accessi, si può dimostrare la necessità di questa ridondanza tramite un fattore implementativo: non tutti gli artefatti che un giocatore possiede sono equipaggiati a un personaggio. Di conseguenza, è necessario tenere traccia di ogni artefatto posseduto dai giocatori direttamente. Inoltre, non tutti i personaggi posseduti dai giocatori devono necessariamente avere degli artefatti, quindi non è possibile neppure risalire ai personaggi posseduti dai giocatori tramite quest'ultimi. Ogni relazione è quindi necessaria per tenere traccia di ogni dato, altrimenti alcune informazioni verrebbero perse.
 
-Essendo che al primo giorno di ogni versione viene rilasciato un banner e un altro scade al termine della versione stessa, si potrebbe pensare che ci sia una ridondanza riguardante gli attributi 'dataRilascio' e 'dataScadenza' nelle entità 'Banner' e 'Versione'. Tuttavia, essendo che ad ogni versione vengono rilasciati 2 banner che poi cambiano (scadendo) a metà versione per lasciare spazio ad altri 2 banner, solo il 50% dei banner ha una data di rilascio coincidente con quella della versione in cui sono stati rilasciati e questi stessi banner hanno data di scadenza differente da quella della versione. Per quanto riguarda l'altro 50%, essi vengono rilasciati pochi giorni dopo la scadenza dei precedenti e scadono 2/3 giorni prima della fine della versione, rendendo quindi queste date incongruenti e rendendo quindi la presenza di entrambe le coppie di date indispensabili, non facendo quindi sussistere alcuna ridondanza.
+Essendo che al primo giorno di ogni versione viene rilasciato un banner e un altro scade al termine della versione stessa, si potrebbe pensare che ci sia una ridondanza riguardante gli attributi 'dataRilascio' e 'dataScadenza' nelle entità 'Banner' e 'Versione'. Tuttavia, essendo che ad ogni versione vengono rilasciati 2 banner che poi cambiano (scadendo) a metà versione per lasciare spazio ad altri 2 banner, solo il 50% dei banner ha una data di rilascio coincidente con quella della versione in cui sono stati rilasciati e questi stessi banner hanno data di scadenza differente da quella della versione. Per quanto riguarda l'altro 50%, essi vengono rilasciati pochi giorni dopo la scadenza dei precedenti e scadono 2/3 giorni prima della fine della versione, rendendo quindi queste date incongruenti e la presenza di entrambe le coppie di date diventa indispensabile, non facendo sussistere alcuna ridondanza.
 
 ## ELIMINAZIONE DELLE GENERALIZZAZIONI
 
@@ -160,7 +160,7 @@ In seguito alla costruzione e ristrutturazione del diagramma E-R, si individuano
 - **Lista Amici** (_<ins>giocatore1</ins>_, _<ins>giocatore2</ins>_)
 - **Artefatto** (<ins>ID</ins>, _proprietario_, _personaggio_, set, tipo, subSbloccato, mainStat, HP, HPperc, ATK, ATKperc, DEF, DEFperc, elementalMastery, energyRecharge, critRate, critDamage)
 - **Armadietto Personaggi** (_<ins>uidGiocatore</ins>_, _<ins>nomePersonaggio</ins>_, livello, amicizia, costellazione, dataAcquisizione)
-- **Personaggio** (<ins>nome</ins>, elemento, arma, attaccoBase, HPbase, difesaBase, costellazione)
+- **Personaggio** (<ins>nome</ins>, elemento, arma, rarità, attaccoBase, HPbase, difesaBase, costellazione)
 - **Banner** (<ins>titolo</ins>, _<ins>IDVersione</ins>_, _personaggio5_, _personaggio4_1_, _personaggio4_2_, _personaggio4_3_, dataRilascio, dataScadenza)
 - **Versione** (<ins>ID</ins>, titolo, dataRilascio, dataScadenza)
 - **Abisso A Spirale** (<ins>faseLunare</ins>, _<ins>IDVersione</ins>_)
