@@ -1,31 +1,3 @@
-CREATE DATABASE IF NOT EXISTS genshinDB;
-USE genshinDB;
-
-CREATE TABLE IF NOT EXISTS Giocatore (
-	uid INT(10) PRIMARY KEY AUTO_INCREMENT,
-    nickname VARCHAR(20) NOT NULL,
-    email VARCHAR(45) NOT NULL,
-    sesso CHAR(1),
-    dataRegistrazione DATE DEFAULT (CURRENT_DATE) NOT NULL,
-    livelloAvventura TINYINT(2) NOT NULL,
-    compleanno DATE NOT NULL,
-    
-    CONSTRAINT valid_email CHECK(email REGEXP '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'),
-    CONSTRAINT binary_gender CHECK(sesso IN ('M', 'F')),
-    CONSTRAINT AR CHECK(livelloAvventura BETWEEN 0 AND 60)
-);
-
-CREATE TABLE IF NOT EXISTS ListaAmici (
-	giocatore1 INT(10) NOT NULL,
-    giocatore2 INT(10) NOT NULL,
-    PRIMARY KEY (giocatore1, giocatore2),
-    
-    FOREIGN KEY (giocatore1) REFERENCES Giocatore(uid),
-    FOREIGN KEY (giocatore2) REFERENCES Giocatore(uid),
-    
-    CONSTRAINT self_love CHECK(giocatore1 <> giocatore2)
-);
-
 CREATE TABLE IF NOT EXISTS Personaggio (
 	nome VARCHAR(20) PRIMARY KEY,
     rarità TINYINT(1) NOT NULL,
@@ -203,46 +175,3 @@ BEGIN
 END$$
 
 DELIMITER ;
-
-CREATE TABLE IF NOT EXISTS Versione (
-	ID DECIMAL(3,1) PRIMARY KEY,
-    titolo VARCHAR(100) UNIQUE NOT NULL, 
-    dataRilascio DATE NOT NULL,
-    dataScadenza DATE NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS Abisso (
-	faseLunare VARCHAR(30) NOT NULL,
-    IDVersione DECIMAL(2,1) NOT NULL,
-    PRIMARY KEY (faseLunare, IDVersione),
-    
-    FOREIGN KEY (IDVersione) REFERENCES Versione(ID)
-);
-
-CREATE TABLE IF NOT EXISTS Nemico (
-	nome VARCHAR(60) PRIMARY KEY NOT NULL,
-    fazione VARCHAR(20) NOT NULL,
-    grado VARCHAR(8) NOT NULL,
-    attacco TINYINT NOT NULL,
-    difesa TINYINT NOT NULL,
-    HP INT NOT NULL,
-    
-    CONSTRAINT faction CHECK(fazione IN ('umani', 'automi', 'fatui', 'hilichurl', 'elementali', 'abisso', 'bestie mistiche', 'leggende')),
-    CONSTRAINT tier CHECK(grado IN ('normale', 'elite', 'boss'))
-);
-
-CREATE TABLE IF NOT EXISTS Camera (
-	piano TINYINT(2) NOT NULL,
-    camera TINYINT(2) NOT NULL,
-    faseLunare VARCHAR(30) NOT NULL,
-    IDVersione DECIMAL(3,1) NOT NULL,
-    nemico VARCHAR(60) NOT NULL,
-    quantità TINYINT NOT NULL,
-    PRIMARY KEY (piano, camera, faseLunare, IDVersione, nemico),
-    
-    FOREIGN KEY (faseLunare, IDVersione) REFERENCES Abisso(faseLunare, IDVersione),
-    FOREIGN KEY (nemico) REFERENCES Nemico(nome),
-    
-    CONSTRAINT floor CHECK(piano BETWEEN 1 AND 12),
-    CONSTRAINT chamber CHECK(camera BETWEEN 1 AND 3)
-);
