@@ -176,7 +176,14 @@ Gli attributi <ins>sottolineati</ins> sono le Primary Key delle tabelle, mentre 
 ## NORMALIZZAZIONE
 
 Tutte le tabelle si trovano già in terza forma normale, ergo non necessitano di operazioni di normalizzazione. La maggior parte di esse è già avvenuta durante la progettazione iniziale dello schema logico.
-Possiamo dedurre la terza forma normale dal fatto che nessun attributo delle tabelle dipende da attributi non primari: ogni attributo delle tabelle dipende solo dalla primary key.
+Possiamo dedurre la terza forma normale dal fatto che nessun attributo delle tabelle dipende da attributi non primari: ogni attributo delle tabelle dipende solo dalla primary key nella sua interezza.
+
+Analisi più approfondita dei casi dubbi:
+
+* Artefatto: l'artefatto è identificato dalla combinazione di ID, proprietario e personaggio equipaggiato (se presente). Le statistiche non possono dipendere da unicamente uno di questi.
+* Camera: Cambiando fase lunare, versione, piano o camera potrebbero variare le quantità di nemici presenti e non è detto che ogni volta che è presente un determinato tipo di nemico, in qualsiasi camera/piano esso si trovi, debba presentarsi con nella stessa quantità, rendendo tutti gli attributi dipendenti dall'intera chiave.
+
+Tutte le altre tabelle hanno chiavi singole o che vanno di pari passo, rendendo "inutile" un'ulteriore analisi.
 
 ## DESCRIZIONE DI FILE E CARTELLE
 
