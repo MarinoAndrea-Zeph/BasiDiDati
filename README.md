@@ -187,7 +187,7 @@ Tutte le altre tabelle hanno chiavi singole o che vanno di pari passo, rendendo 
 
 ## DESCRIZIONE DI FILE E CARTELLE
 
-Le cartelle 'excalidraw_files' e 'images' si spiegano abbastanza da sole.
+Le cartelle 'excalidraw_files' e 'images' possiedono un nome molto autoesplicativo.
 Nella cartella 'SQL' saranno presenti tutti i file relativi al codice del database. Nella sottocartella 'tabelle' vi sono due file: il file 'genshinDB' contiene tutte le CREATE TABLE del database, in modo tale da poterlo riprodurre tale e quale; nel file 'importantCreate' vi sono solo le CREATE TABLE più interessanti, con degli attributi o dei constraint di particolare rilievo o interesse didattco. Al difuori della cartella 'tabelle' è presente il file 'query', il quale contiene le stored procedures di rilievo per le operazioni più importanti da fare sul database, di cui si è parlato nella sezione [Operazioni di Interesse](#OPERAZIONI_DI_INTERESSE).
 
 Grazie mille per la vostra attenzione.
